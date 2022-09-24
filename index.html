@@ -315,6 +315,195 @@
 </li>
 </ul>
 <h3 id="2-5-Symbol"><a href="#2-5-Symbol" class="headerlink" title="2.5 Symbol"></a>2.5 Symbol</h3><p>ES6新增类型，用于创建唯一记号，进而用作非字符串形式的对象属性</p>
+<h3 id="2-6-Object"><a href="#2-6-Object" class="headerlink" title="2.6 Object"></a>2.6 Object</h3><p><code>let o = new Object(); </code></p>
+<h2 id="3-操作符"><a href="#3-操作符" class="headerlink" title="3. 操作符"></a>3. 操作符</h2><ul>
+<li><p>位操作符</p>
+<ul>
+<li>与，或，非，异或</li>
+</ul>
+</li>
+<li><p>关系操作符</p>
+<ul>
+<li><code>&lt;</code>  ,  <code>&gt;</code>  , <code>&lt;=</code>  ,  <code>&gt;=</code>  , </li>
+<li>比较字符串与字符串时，会比较字符串的ASCII编码，可以进行排序</li>
+<li>在比较数字与字符串时，会先将字符串转化为数字再进行比较，如果字符串转化后为NaN则返回false（NaN和任何数字比较都返回false）</li>
+</ul>
+</li>
+<li><p>逗号操作符：</p>
+<p><code>let num1 = 1, num2 = 2, num3 = 3; </code></p>
+<p><code>let num = (5, 1, 4, 8, 0); // num 的值为 0 </code></p>
+</li>
+</ul>
+<h3 id="3-1-等于操作符"><a href="#3-1-等于操作符" class="headerlink" title="3.1 等于操作符"></a>3.1 等于操作符</h3><ul>
+<li>等于操作符分为 等于 不等于，全等  不全等 两类四种</li>
+<li>等于和不等于<code>==</code>    <code>！=</code><ul>
+<li>在比较前会做<strong>强制类型转化</strong><ul>
+<li>布尔值，字符串会转化成数字再和数值比较</li>
+<li>对象和不是对象的操作数比较，会先调用对象的valueof方法取得原始值；如果两个都是对象操作数，则比较二者是否指向同一个对象</li>
+</ul>
+</li>
+<li>null &#x3D;&#x3D; undefined ，且二者不能转化为其他类型的值再进行比较，即其他值都不等于 null 或 undefined</li>
+<li>NaN 不等于 任何操作数，包括NaN</li>
+</ul>
+</li>
+<li>全等和不全等<code>===</code>    <code>！==</code><ul>
+<li>不做强制类型转化</li>
+<li>null !&#x3D;&#x3D; undefined</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-语句"><a href="#4-语句" class="headerlink" title="4. 语句"></a>4. 语句</h2><ul>
+<li><p>标签语句，给语句加标签。语法： <code>label: statement </code>，例子</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">start</span>: <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; count; i++) &#123; </span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(i); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>start是一个标签，可以再后面通过break和continue语句引用，如</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = <span class="number">0</span>; </span><br><span class="line"><span class="attr">outermost</span>: </span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123; </span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++) &#123; </span><br><span class="line">   <span class="keyword">if</span> (i == <span class="number">5</span> &amp;&amp; j == <span class="number">5</span>) &#123; </span><br><span class="line">   <span class="keyword">break</span> outermost; </span><br><span class="line">   &#125; </span><br><span class="line"> num++; </span><br><span class="line"> &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num); <span class="comment">// 55</span></span><br></pre></td></tr></table></figure>
+
+<p>其会直接中断外层循环并跳出，不用自己再设置boolen值进行判断</p>
+</li>
+<li><p>with语句：将代码作用域设置为特定的对象。</p>
+<p>语法<code>with (expression) statement;</code>，例子</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> qs = location.<span class="property">search</span>.<span class="title function_">substring</span>(<span class="number">1</span>); </span><br><span class="line"><span class="keyword">let</span> hostName = location.<span class="property">hostname</span>; </span><br><span class="line"><span class="keyword">let</span> url = location.<span class="property">href</span>; </span><br><span class="line"><span class="comment">//上面代码中的每一行都用到了 location 对象。如果使用 with 语句，就可以少写一些代码：</span></span><br><span class="line"><span class="title function_">with</span>(<span class="params">location</span>) &#123; </span><br><span class="line"> <span class="keyword">let</span> qs = search.<span class="title function_">substring</span>(<span class="number">1</span>); </span><br><span class="line"> <span class="keyword">let</span> hostName = hostname; </span><br><span class="line"> <span class="keyword">let</span> url = href; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>with语句会影响和性能，不推荐使用</strong></p>
+</li>
+</ul>
+<h1 id="二-变量、作用域、内存"><a href="#二-变量、作用域、内存" class="headerlink" title="二. 变量、作用域、内存"></a>二. 变量、作用域、内存</h1><h2 id="1-原始值与引用值"><a href="#1-原始值与引用值" class="headerlink" title="1. 原始值与引用值"></a>1. 原始值与引用值</h2><p>原始值指的就是Undefined、Null、Boolen、Number、String、Symbol这六个类型的值，保存原始值的变量存的就是这些值本身，是<strong>按值访问</strong>的，我们操作变量实际上就是操作这些值。引用值就是保存在内存中的对象，JavaScript中不能直接操作内存空间，保存引用值的变量存的是对象的地址，是<strong>按引用访问</strong>的。</p>
+<p>不同点</p>
+<ul>
+<li><p>引用值可以设置对象属性，原始值不行</p>
+</li>
+<li><p>二者复制方式不同</p>
+<ul>
+<li>原始值是直接将值复制到新变量上（栈上），二者独立使用不干扰<img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209241416683.png" alt="image-20220924141555555"></li>
+<li>引用值则复制的是引用，二者指向同一个堆上对象<img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209241416218.png" alt="image-20220924141641147"></li>
+</ul>
+</li>
+<li><p>传递参数</p>
+<ul>
+<li><p>JavaScript函数传参是按值传递</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">setName</span>(<span class="params">obj</span>) &#123; </span><br><span class="line"> obj.<span class="property">name</span> = <span class="string">&quot;Nicholas&quot;</span>; </span><br><span class="line"> obj = <span class="keyword">new</span> <span class="title class_">Object</span>(); </span><br><span class="line"> obj.<span class="property">name</span> = <span class="string">&quot;Greg&quot;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> <span class="title class_">Object</span>(); </span><br><span class="line"><span class="title function_">setName</span>(person); </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(person.<span class="property">name</span>); <span class="comment">// &quot;Nicholas&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果是按引用传递的话，输出的应该是Greg；安置传递导致obj再函数内新建的对象，在执行完函数后自动销毁</p>
+</blockquote>
+</li>
+<li><p>原始值直接复制一份进去，不会对外面产生影响</p>
+</li>
+<li><p>引用值同样也是复制一份进去，但是由于指向的是同一个对象，所以可能会对外面产生影响</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-上下文与作用域"><a href="#2-上下文与作用域" class="headerlink" title="2. 上下文与作用域"></a>2. 上下文与作用域</h2><ul>
+<li><p>每个上下文都有一个关联的变量对象（variable object），</p>
+<p>而这个上下文中定义的所有变量和函数都存在于这个对象上</p>
+</li>
+<li><p>简单来说，就是当前函数只能访问得到自己定义的变量以及他的父级函数以及父级的父级… 的变量，这些作用域形成一条作用域链，离当前函数越近排得越靠前。每当有需要查找的标识符时，就按照作用域链依次查找</p>
+</li>
+<li><p>作用域链增强：将某个作用域提升到作用域链的最前端</p>
+<ul>
+<li>with语句</li>
+<li>try&#x2F;catch中的catch语句</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-垃圾回收-⭐"><a href="#3-垃圾回收-⭐" class="headerlink" title="3. 垃圾回收 ⭐"></a>3. 垃圾回收 ⭐</h2><ul>
+<li>目的：管理内存，释放不必要的内存占用，提高利用率</li>
+<li>基本思路：确定哪个变量不会再用，释放它的内存；周期性进行</li>
+<li>实现方法：垃圾回收程序必须跟踪记录哪个变量还会使用，以及哪个变量不会再使用，以便回收内存<ul>
+<li>标记未使用的变量的两种策略：标记清理、引用计数</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-1-清理策略"><a href="#3-1-清理策略" class="headerlink" title="3.1 清理策略"></a>3.1 清理策略</h3><h4 id="3-1-1-标记清理"><a href="#3-1-1-标记清理" class="headerlink" title="3.1.1 标记清理"></a>3.1.1 标记清理</h4><ul>
+<li>步骤<ul>
+<li>垃圾回收程序运行的时候，会<strong>标记</strong>内存中存储的所有变量（记住，标记方法有很多种）</li>
+<li>然后，它会将所有在上下文中的变量，以及被在上下文中的变量引用的变量的<strong>标记去掉</strong>（因为这些变量都可能被调用）</li>
+<li>在这之后标记还存在的变量就是待删除的，垃圾回收程序会做一次内存清理，销毁带标记的值并收回内存</li>
+</ul>
+</li>
+<li>效果<ul>
+<li>最常用的垃圾回收策略，周期性进行</li>
+<li>脱离作用域的变量会被回收</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-1-2-引用计数"><a href="#3-1-2-引用计数" class="headerlink" title="3.1.2 引用计数"></a>3.1.2 引用计数</h4><ul>
+<li><p>方法：</p>
+<ul>
+<li>当一个值（内存空间）的<strong>引用数</strong>为0时，下次进行垃圾回收的时候会将其回收。</li>
+<li>引用数计算方式：声明变量并给它赋一个引用值时，这个值的引用数为 1。如果同一个值又被赋给另一个变量，那么引用数加 1。类似地，如果保存对该值引用的变量被其他值给覆盖了，那么引用数减 1。</li>
+</ul>
+</li>
+<li><p>问题</p>
+<ul>
+<li><p>循环引用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">problem</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="keyword">let</span> objectA = <span class="keyword">new</span> <span class="title class_">Object</span>(); </span><br><span class="line"> <span class="keyword">let</span> objectB = <span class="keyword">new</span> <span class="title class_">Object</span>(); </span><br><span class="line"> objectA.<span class="property">someOtherObject</span> = objectB; </span><br><span class="line"> objectB.<span class="property">anotherObject</span> = objectA; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在这个例子中，objectA 和 objectB 通过各自的属性相互引用，意味着它们的引用数都是 2。在标记清理策略下，这不是问题，因为在函数结束后，这两个对象都不在作用域中。而在引用计数策略下，objectA 和 objectB 在函数结束后还会存在，因为它们的引用数永远不会变成 0。如果函数被多次调用，则会导致大量内存永远不会被释放。</p>
+</blockquote>
+</li>
+<li><p>循环引用解决方式：在确定不使用的情况下，将引用变量设置为null</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">problem</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="keyword">let</span> objectA = <span class="keyword">new</span> <span class="title class_">Object</span>(); </span><br><span class="line"> <span class="keyword">let</span> objectB = <span class="keyword">new</span> <span class="title class_">Object</span>(); </span><br><span class="line"> objectA.<span class="property">someOtherObject</span> = objectB; </span><br><span class="line"> objectB.<span class="property">anotherObject</span> = objectA; </span><br><span class="line"> objectA.<span class="property">someOtherObject</span> = <span class="literal">null</span>; </span><br><span class="line"> objectB.<span class="property">anotherObject</span> = <span class="literal">null</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-内存管理"><a href="#3-2-内存管理" class="headerlink" title="3.2 内存管理"></a>3.2 内存管理</h3><p>将内存占用量保持在一个较低的值可以让页面的性能更好，而优化内存占用的最佳手段就是只保存执行过程中的必要数据；如果不再必要，则设置为null （使得原先的值不再存在于上下文或者上下文变量的引用中），在下次垃圾回收时候被回收</p>
+<ul>
+<li>如果时函数级变量，在函数执行完成后，变量值会自动脱离上下文，不用专门设置变量为null</li>
+<li>设置为null的场景更多在于全局变量，因为其脱离上下文得等到整个程序结束</li>
+</ul>
+<h4 id="3-2-1-const-与-let-改善性能"><a href="#3-2-1-const-与-let-改善性能" class="headerlink" title="3.2.1 const 与 let 改善性能"></a>3.2.1 const 与 let 改善性能</h4><p>因为 const和 let 都以块（而非函数）为作用域，所以相比于使用 var，使用这两个新关键字可能会更早地让垃圾回收程序介入，尽早回收应该回收的内存。在块作用域比函数作用域更早终止的情况下，这就有可能发生。</p>
+<h4 id="3-2-2-隐藏类与删除操作"><a href="#3-2-2-隐藏类与删除操作" class="headerlink" title="3.2.2 隐藏类与删除操作"></a>3.2.2 隐藏类与删除操作</h4><p>V8 Javascript引擎在将代码编译为机器码时，会使用“隐藏类”，共用隐藏类有助于性能提升</p>
+<p>创建对象</p>
+<ul>
+<li><p>在创建实例对象时，实例对象会共用隐藏类，如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Article</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">title</span> = <span class="string">&#x27;Inauguration Ceremony Features Kazoo Band&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> a1 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line"><span class="keyword">let</span> a2 = <span class="keyword">new</span> <span class="title class_">Article</span>();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>但是如果之后再实例的基础上进行动态属性复制，二者隐藏类将无法共享而是各自独有，而依据操作的频率以及隐藏类的大小会对性能造成不同程度的影响，如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Article</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">title</span> = <span class="string">&#x27;Inauguration Ceremony Features Kazoo Band&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> a1 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line"><span class="keyword">let</span> a2 = <span class="keyword">new</span> <span class="title class_">Article</span>();</span><br><span class="line">a2.<span class="property">author</span> = <span class="string">&#x27;Jake&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解决方法：避免先创建再补充的动态属性复制，在构造函数中一次性声明所有属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Article</span>(<span class="params">opt_author</span>) &#123; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">title</span> = <span class="string">&#x27;Inauguration Ceremony Features Kazoo Band&#x27;</span>; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">author</span> = opt_author; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> a1 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line"><span class="keyword">let</span> a2 = <span class="keyword">new</span> <span class="title class_">Article</span>(<span class="string">&#x27;Jake&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>删除属性</p>
+<ul>
+<li><p>删除(delete)属性会影响隐藏类共享</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Article</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">title</span> = <span class="string">&#x27;Inauguration Ceremony Features Kazoo Band&#x27;</span>; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">author</span> = <span class="string">&#x27;Jake&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> a1 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line"><span class="keyword">let</span> a2 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line"><span class="keyword">delete</span> a1.<span class="property">author</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上述代码两个实例不再共享隐藏类，而解决方法是不要使用delete，而是直接将不需要的属性设置为null，这样不影响隐藏类共享，而且可以协助垃圾回收的进行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Article</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">title</span> = <span class="string">&#x27;Inauguration Ceremony Features Kazoo Band&#x27;</span>; </span><br><span class="line"> <span class="variable language_">this</span>.<span class="property">author</span> = <span class="string">&#x27;Jake&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> a1 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line"><span class="keyword">let</span> a2 = <span class="keyword">new</span> <span class="title class_">Article</span>(); </span><br><span class="line">a1.<span class="property">author</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-2-3-内存泄漏"><a href="#3-2-3-内存泄漏" class="headerlink" title="3.2.3 内存泄漏"></a>3.2.3 内存泄漏</h4><p>内存泄漏：内存空间持续暴露，无法回收</p>
+<ul>
+<li><p>意外声明全局变量</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">setName</span>(<span class="params"></span>) &#123; </span><br><span class="line"> name = <span class="string">&#x27;Jake&#x27;</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时，解释器会把变量 name 当作 window 的属性来创建（相当于 window.name &#x3D; ‘Jake’）。可想而知，在 window 对象上创建的属性，只要 window 本身不被清理就不会消失。<br>解决方法，只要在变量声明前头加上 var、let 或 const 关键字即可，这样变量就会在函数执行完毕后离开作用域。</p>
+</li>
+<li><p>定时器导致内存泄漏</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> name = <span class="string">&#x27;Jake&#x27;</span>; </span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123; </span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(name); </span><br><span class="line">&#125;, <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<p>定时器一直允许，name就无法回收</p>
+</li>
+<li><p>闭包导致内存泄漏</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> outer = <span class="keyword">function</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="keyword">let</span> name = <span class="string">&#x27;Jake&#x27;</span>; </span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>) &#123; </span><br><span class="line"> <span class="keyword">return</span> name; </span><br><span class="line"> &#125;; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上述函数中返回的函数引用到了原来函数内部的name变量，只要返回的函数还存在着，原来的函数中的name变量就始终无法回收</p>
+</li>
+</ul>
+<h4 id="3-2-4-静态分配与对象池"><a href="#3-2-4-静态分配与对象池" class="headerlink" title="3.2.4 静态分配与对象池"></a>3.2.4 静态分配与对象池</h4><p>由于垃圾回收会降低浏览器性能，我们在想办法让垃圾回收的效率提高的同时，也需要想办法尽可能地减少垃圾回收的发生；理论上，如果能够合理使用分配的内存，同时避免多余的垃圾回收，那就可以保住因释放内存而损失的性能。</p>
+<p>浏览器决定何时运行垃圾回收运行的一个标准是对象的更替速度。如果有很多对象被初始化，然后一下子又都超出了作用域，那么浏览器就会采用更激进的方式调度垃圾回收程序运行。例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addVector</span>(<span class="params">a, b</span>) &#123; </span><br><span class="line"> <span class="keyword">let</span> resultant = <span class="keyword">new</span> <span class="title class_">Vector</span>(); </span><br><span class="line"> resultant.<span class="property">x</span> = a.<span class="property">x</span> + b.<span class="property">x</span>; </span><br><span class="line"> resultant.<span class="property">y</span> = a.<span class="property">y</span> + b.<span class="property">y</span>; </span><br><span class="line"> <span class="keyword">return</span> resultant; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果频繁调用这个方法的话，就会不断由Vector对象的创建和脱离作用域，导致垃圾回收更快发生，解决办法就是不要在内部创建对象而是使用外面已经存在的对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addVector</span>(<span class="params">a, b, resultant</span>) &#123; </span><br><span class="line"> resultant.<span class="property">x</span> = a.<span class="property">x</span> + b.<span class="property">x</span>; </span><br><span class="line"> resultant.<span class="property">y</span> = a.<span class="property">y</span> + b.<span class="property">y</span>; </span><br><span class="line"> <span class="keyword">return</span> resultant; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>外面的对象在哪里创建呢？一个策略是使用<strong>对象池</strong>，即其本身持有一定数量的对象实例，需要使用则从中取出一个实例，不需要则归还，因为对象池中的对象始终存在，所以垃圾回收探测不会发现有对象频繁更替，减少运行频率</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vectorPool 是已有的对象池 </span></span><br><span class="line"><span class="keyword">let</span> v1 = vectorPool.<span class="title function_">allocate</span>(); </span><br><span class="line"><span class="keyword">let</span> v2 = vectorPool.<span class="title function_">allocate</span>(); </span><br><span class="line"><span class="keyword">let</span> v3 = vectorPool.<span class="title function_">allocate</span>(); </span><br><span class="line">v1.<span class="property">x</span> = <span class="number">10</span>; </span><br><span class="line">v1.<span class="property">y</span> = <span class="number">5</span>; </span><br><span class="line">v2.<span class="property">x</span> = -<span class="number">3</span>; </span><br><span class="line">v2.<span class="property">y</span> = -<span class="number">6</span>; </span><br><span class="line"><span class="title function_">addVector</span>(v1, v2, v3); </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>([v3.<span class="property">x</span>, v3.<span class="property">y</span>]); <span class="comment">// [7, -1] </span></span><br><span class="line">vectorPool.<span class="title function_">free</span>(v1); </span><br><span class="line">vectorPool.<span class="title function_">free</span>(v2); </span><br><span class="line">vectorPool.<span class="title function_">free</span>(v3); </span><br><span class="line"><span class="comment">// 如果对象有属性引用了其他对象</span></span><br><span class="line"><span class="comment">// 则这里也需要把这些属性设置为 null </span></span><br><span class="line">v1 = <span class="literal">null</span>; </span><br><span class="line">v2 = <span class="literal">null</span>; </span><br><span class="line">v3 = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
 
                 </div>
                 <footer class="kratos-entry-footer clearfix">
