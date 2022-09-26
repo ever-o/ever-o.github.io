@@ -504,6 +504,218 @@
 <p>外面的对象在哪里创建呢？一个策略是使用<strong>对象池</strong>，即其本身持有一定数量的对象实例，需要使用则从中取出一个实例，不需要则归还，因为对象池中的对象始终存在，所以垃圾回收探测不会发现有对象频繁更替，减少运行频率</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vectorPool 是已有的对象池 </span></span><br><span class="line"><span class="keyword">let</span> v1 = vectorPool.<span class="title function_">allocate</span>(); </span><br><span class="line"><span class="keyword">let</span> v2 = vectorPool.<span class="title function_">allocate</span>(); </span><br><span class="line"><span class="keyword">let</span> v3 = vectorPool.<span class="title function_">allocate</span>(); </span><br><span class="line">v1.<span class="property">x</span> = <span class="number">10</span>; </span><br><span class="line">v1.<span class="property">y</span> = <span class="number">5</span>; </span><br><span class="line">v2.<span class="property">x</span> = -<span class="number">3</span>; </span><br><span class="line">v2.<span class="property">y</span> = -<span class="number">6</span>; </span><br><span class="line"><span class="title function_">addVector</span>(v1, v2, v3); </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>([v3.<span class="property">x</span>, v3.<span class="property">y</span>]); <span class="comment">// [7, -1] </span></span><br><span class="line">vectorPool.<span class="title function_">free</span>(v1); </span><br><span class="line">vectorPool.<span class="title function_">free</span>(v2); </span><br><span class="line">vectorPool.<span class="title function_">free</span>(v3); </span><br><span class="line"><span class="comment">// 如果对象有属性引用了其他对象</span></span><br><span class="line"><span class="comment">// 则这里也需要把这些属性设置为 null </span></span><br><span class="line">v1 = <span class="literal">null</span>; </span><br><span class="line">v2 = <span class="literal">null</span>; </span><br><span class="line">v3 = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
 
+<h1 id="三、基本引用类型"><a href="#三、基本引用类型" class="headerlink" title="三、基本引用类型"></a>三、基本引用类型</h1><p>引用值（或者对象）是某个特定<strong>引用类型</strong>的实例，引用类型是将数据和功能组织到一起的结构，也被称为对象定义，但是它不等同于类。ECMAScript中也缺少面向对象编程语言的基本结构，包括类和接口。</p>
+<blockquote>
+<p>注意：函数也是一种引用类型，也可以创建对应对象</p>
+</blockquote>
+<h2 id="1-Data"><a href="#1-Data" class="headerlink" title="1. Data"></a>1. Data</h2><h3 id="1-1-创建Data对象"><a href="#1-1-创建Data对象" class="headerlink" title="1.1 创建Data对象"></a>1.1 创建Data对象</h3><p>Data是一种引用类型，可以创建Data的实例对象，创建方法如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="comment">// 在不给任何参数的情况下，创建的对象会保存当前的日期和事件</span></span><br><span class="line"><span class="keyword">let</span> now1 = <span class="keyword">new</span> <span class="title class_">Data</span>.<span class="title function_">parse</span>(param);</span><br><span class="line"><span class="keyword">let</span> now2 = <span class="keyword">new</span> <span class="title class_">Data</span>.<span class="title function_">UTC</span>(param);</span><br><span class="line"><span class="comment">// 可以输入指定格式的参数，来创建指定日期对象，格式见下</span></span><br><span class="line"><span class="keyword">let</span> now3 = <span class="keyword">new</span> <span class="title class_">Data</span>(param);</span><br><span class="line"><span class="comment">// 也可以直接new Data输入参数，其会根据参数类型来调用parse或者UTC</span></span><br></pre></td></tr></table></figure>
+
+<p>Date.parse()方法接收一个表示日期的字符串参数，尝试将这个字符串转换为表示该日期的毫秒数。支持的日期格式如下</p>
+<p><img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209251630824.png" alt="image-20220925162953660"></p>
+<p>Date.UTC()方法也返回日期的毫秒表示的参数是年、零起点月数（1 月是 0，2 月是 1，以此类推）、日（1~31）、时（0~23）、分、秒和毫秒。这些参数中，只有前两个（年和月）是必需的。如果不提供日，那么默认为 1 日。其他参数的默认值都是 0。例子如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GMT 时间 2000 年 1 月 1 日零点</span></span><br><span class="line"><span class="keyword">let</span> y2k = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">UTC</span>(<span class="number">2000</span>, <span class="number">0</span>)); </span><br><span class="line"><span class="comment">// GMT 时间 2005 年 5 月 5 日下午 5 点 55 分 55 秒</span></span><br><span class="line"><span class="keyword">let</span> allFives = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="title class_">Date</span>.<span class="title function_">UTC</span>(<span class="number">2005</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">17</span>, <span class="number">55</span>, <span class="number">55</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-继承的方法"><a href="#1-2-继承的方法" class="headerlink" title="1.2 继承的方法"></a>1.2 继承的方法</h3><p>toLocaleString()、toString()和 valueOf()</p>
+<ul>
+<li>toLocaleString()：返回与浏览器运行的本地环境一致的日期</li>
+<li>toString()：：通常返回带时区信息的日期和时间</li>
+<li>valueOf()：根本就不返回字符串，这个方法被重写后返回的是日期的毫秒表示</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">toLocaleString</span>() - <span class="number">2</span>/<span class="number">1</span>/<span class="number">2019</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">AM</span> </span><br><span class="line"><span class="title function_">toString</span>() - <span class="title class_">Thu</span> <span class="title class_">Feb</span> <span class="number">1</span> <span class="number">2019</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> <span class="variable constant_">GMT</span>-<span class="number">0800</span> (<span class="title class_">Pacific</span> <span class="title class_">Standard</span> <span class="title class_">Time</span>)</span><br><span class="line"><span class="keyword">let</span> date1 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">// 2019 年 1 月 1 日</span></span><br><span class="line"><span class="keyword">let</span> date2 = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2019</span>, <span class="number">1</span>, <span class="number">1</span>); <span class="comment">// 2019 年 2 月 1 日</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &lt; date2); <span class="comment">// true </span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(date1 &gt; date2); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-日期格式化方法"><a href="#1-3-日期格式化方法" class="headerlink" title="1.3 日期格式化方法"></a>1.3 日期格式化方法</h3><p><img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209251634329.png" alt="image-20220925163408248"></p>
+<p>一些其他的接口需要则自行查阅</p>
+<h2 id="2-RegExp"><a href="#2-RegExp" class="headerlink" title="2. RegExp"></a>2. RegExp</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;hello world&quot;</span>)</span><br><span class="line"><span class="comment">// 通过字面量形式定义正则表达式，语法：let expression = /pattern/flags</span></span><br><span class="line">    <span class="keyword">let</span> pattern = <span class="regexp">/at/g</span>; <span class="comment">// 匹配字符串中的所有&quot;at&quot;</span></span><br><span class="line">    <span class="keyword">let</span> pattern8 = <span class="regexp">/[bc]at/i</span>  <span class="comment">// 匹配第一个&quot;bat&quot;或&quot;cat&quot;，忽略大小写</span></span><br><span class="line">    <span class="keyword">let</span> pattern3 = <span class="regexp">/.at/ig</span>  <span class="comment">// 匹配所有以&quot;at&quot;结尾的三字符组合，忽略大小写</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> pattern4 = <span class="regexp">/\.at/gi</span>; <span class="comment">// 匹配所有&quot;.at&quot;，忽略大小写(元字符需要转义)</span></span><br><span class="line"><span class="comment">// 通过创建对象的方式创建字面量</span></span><br><span class="line">    <span class="keyword">let</span> pattern5 = <span class="keyword">new</span> <span class="title class_">RegExp</span>(<span class="string">&quot;.at&quot;</span>,<span class="string">&quot;g&quot;</span>)  <span class="comment">// 匹配所有以&quot;at&quot;结尾的三字符组合</span></span><br><span class="line">    <span class="keyword">let</span> pattern6 = <span class="keyword">new</span> <span class="title class_">RegExp</span>(<span class="string">&quot;\\.at&quot;</span>,<span class="string">&quot;g&quot;</span>) <span class="comment">// 匹配所有&quot;.at&quot;,字符串中需要二次转义</span></span><br><span class="line">    <span class="keyword">let</span> pattern7 = <span class="keyword">new</span> <span class="title class_">RegExp</span>(pattern) <span class="comment">// 可基于已存在的RegExp对象创建</span></span><br><span class="line"><span class="comment">// 访问对象属性</span></span><br><span class="line"><span class="comment">//     let pattern1 = /\[bc\]at/i;</span></span><br><span class="line"><span class="comment">//     console.log(pattern1.global); // false</span></span><br><span class="line"><span class="comment">//     console.log(pattern1.ignoreCase); // true</span></span><br><span class="line"><span class="comment">//     console.log(pattern1.multiline); // false</span></span><br><span class="line"><span class="comment">//     console.log(pattern1.lastIndex); // 0</span></span><br><span class="line"><span class="comment">//     console.log(pattern1.source); // &quot;\[bc\]at&quot;</span></span><br><span class="line"><span class="comment">//     console.log(pattern1.flags); // &quot;i&quot;</span></span><br><span class="line"><span class="comment">//     let pattern2 = new RegExp(&quot;\\[bc\\]at&quot;, &quot;i&quot;);</span></span><br><span class="line"><span class="comment">//     console.log(pattern2.global); // false</span></span><br><span class="line"><span class="comment">//     console.log(pattern2.ignoreCase); // true</span></span><br><span class="line"><span class="comment">//     console.log(pattern2.multiline); // false</span></span><br><span class="line"><span class="comment">//     console.log(pattern2.lastIndex); // 0</span></span><br><span class="line"><span class="comment">//     console.log(pattern2.source); // &quot;\[bc\]at&quot;</span></span><br><span class="line"><span class="comment">//     console.log(pattern2.flags); // &quot;i&quot;</span></span><br><span class="line"><span class="comment">// 实例方法</span></span><br><span class="line">    <span class="comment">// exec()</span></span><br><span class="line">    <span class="keyword">let</span> text = <span class="string">&quot;cat, bat, sat, fat&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> pattern9 = <span class="regexp">/.at/g</span>; <span class="comment">// 加上/g，每次执行exec都会查找下一个.at的字符串；如果不加，则始终都是cat</span></span><br><span class="line">    <span class="comment">// 输入参数，用模式检测的字符串</span></span><br><span class="line">    <span class="comment">// 返回值：包含第一个匹配信息的数组，包含index和input属性，index存储字符串中匹配模式的起始位置，input存储需要查找的字符串</span></span><br><span class="line">    <span class="keyword">let</span> matches = pattern9.<span class="title function_">exec</span>(text);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(matches)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(pattern9.<span class="property">lastIndex</span>)</span><br></pre></td></tr></table></figure>
+
+<p>具体语法需要用时再查</p>
+<h2 id="3-原始值的包装类"><a href="#3-原始值的包装类" class="headerlink" title="3. 原始值的包装类"></a>3. 原始值的包装类</h2><p>由于原始值包装类型的存在，JavaScript 中的原始值可以被当成对象来使用。有 3 种原始值包装类型：Boolean、Number 和 String。它们都具备如下特点。</p>
+<ul>
+<li>每种包装类型都映射到同名的原始类型。</li>
+<li>以读模式访问原始值时，后台会实例化一个原始值包装类型的对象，借助这个对象可以操作相应的数据。（比如可以调用对应方法）</li>
+<li>涉及原始值的语句执行完毕后，包装对象就会被销毁。</li>
+</ul>
+<h2 id="4-内置单例"><a href="#4-内置单例" class="headerlink" title="4. 内置单例"></a>4. 内置单例</h2><p>当代码开始执行时，全局上下文中会存在两个内置对象：Global 和 Math。其中，Global 对象在大多数 ECMAScript 实现中无法直接访问。不过，浏览器将其实现为 window 对象。所有全局变量和函数都是 Global 对象的属性。Math 对象包含辅助完成复杂计算的属性和方法。</p>
+<h1 id="四、集合引用类型"><a href="#四、集合引用类型" class="headerlink" title="四、集合引用类型"></a>四、集合引用类型</h1><h2 id="1-Object"><a href="#1-Object" class="headerlink" title="1. Object"></a>1. Object</h2><ul>
+<li>创建方式<ul>
+<li>new Object()，之后动态赋值属性</li>
+<li>以对象字面量的形式创建（不会调用Object的构造函数）</li>
+</ul>
+</li>
+<li>属性存取方式<ul>
+<li>点语法，即 Person.name之类（首选）</li>
+<li>中括号，如Preson[“name”]，如果是字符串要加引号<ul>
+<li>其用处主要在于中括号内部可以使用变量，以及在点语法不合法的情况下</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Array"><a href="#2-Array" class="headerlink" title="2. Array"></a>2. Array</h2><h3 id="2-1-创建数组"><a href="#2-1-创建数组" class="headerlink" title="2.1 创建数组"></a>2.1 创建数组</h3><ul>
+<li>new Array()<ul>
+<li>可以不传参，可以传长度，可以传数组元素</li>
+<li>new可以省略</li>
+</ul>
+</li>
+<li>数组字面量，如 <code>let arr1 = [1,2,3,4]</code><ul>
+<li>同Object，不会调用构造函数</li>
+</ul>
+</li>
+<li><code>Array.form(param1)</code><ul>
+<li>用于将<strong>类数组结构</strong>转化为数组实例</li>
+<li>第一个参数是一个可迭代对象，或者是有一个length属性和可索引元素的结构</li>
+<li>第二个可选参数：一个映射函数</li>
+<li>第三个可选参数：指定映射函数中this的值</li>
+</ul>
+</li>
+<li><code>Array.of(param)</code><ul>
+<li>将一组参数转化为数组</li>
+<li>如：<code>Array.of(…[1,2,3,4]) // [1,2,3,4]</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-数组空位"><a href="#2-2-数组空位" class="headerlink" title="2.2 数组空位"></a>2.2 数组空位</h3><ul>
+<li>创建数组的时候可以只输入逗号不输入具体值，其会创建对应长度，并且每个元素的值都是undefined的数组</li>
+<li>ES6后，空位的值是undefined；ES6之前则不一定</li>
+<li>所以建议如果要创建有空位的数组的话，将空位设置为undefined</li>
+</ul>
+<h3 id="2-3-数组索引"><a href="#2-3-数组索引" class="headerlink" title="2.3 数组索引"></a>2.3 数组索引</h3><ul>
+<li>可以通过索引来访问数组元素</li>
+<li>可以通过索引来新增数组元素<ul>
+<li>如果索引超出长度，则中间未定义的元素值为undefined</li>
+</ul>
+</li>
+<li>可以直接设置数组的length属性，来新增数组元素（值都为undefined）</li>
+<li>可以通过length属性，方便地向数组末尾添加元素</li>
+</ul>
+<h3 id="2-4-检测数组"><a href="#2-4-检测数组" class="headerlink" title="2.4 检测数组"></a>2.4 检测数组</h3><ul>
+<li>instanceof</li>
+<li>Array.isArray</li>
+</ul>
+<h3 id="2-5-迭代器方法"><a href="#2-5-迭代器方法" class="headerlink" title="2.5 迭代器方法"></a>2.5 迭代器方法</h3><ul>
+<li><code>keys()</code> <code>values()</code> <code>entries()</code>是数组上的三个检索数组内容的方法，<ul>
+<li>第一个返回数组索引的迭代器</li>
+<li>第二个返回数组值的迭代器</li>
+<li>第三个返回数组 索引&#x2F;值对 的迭代器</li>
+</ul>
+</li>
+<li>可以通过form方法，把迭代器转化为数组</li>
+<li>可以通过 for-of 循环，遍历迭代器<ul>
+<li>for-of循环是只能遍历迭代器，其寻找下一个的方式是通过迭代器的<code>next()</code>方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-6-复制和填充"><a href="#2-6-复制和填充" class="headerlink" title="2.6 复制和填充"></a>2.6 复制和填充</h3><ul>
+<li>批量复制方法<code>fill()</code>和填充数组方法<code>copyWithin()</code></li>
+<li><code>fill(value,beginIndex,endIndex)</code><ul>
+<li>作用：向一个数组中插入全部或部分相同的值</li>
+<li>第一个参数；是填充的数值</li>
+<li>beginIndex：开始填充的位置，可选，默认从头</li>
+<li>endIndex：填充到哪里，可选，默认到末尾</li>
+<li>其中index如果是负数，则表示从末尾开始，可通过加上数组长度来计算实际位置</li>
+<li>如果index超出范围，fill方法会静默忽略</li>
+</ul>
+</li>
+<li><code>copyWithin(insertIndex,beginIndex,endIndex)</code><ul>
+<li>作用：按照指定范围浅复制数组中的部分内容，插入到指定索引开始位置</li>
+<li>index规则同上</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-7-转换方法"><a href="#2-7-转换方法" class="headerlink" title="2.7 转换方法"></a>2.7 转换方法</h3><ul>
+<li><code>valueOf()</code>：返回数组本身</li>
+<li><code>toString()</code>：调用每个数组元素的toString方法，将结果用逗号拼接并返回</li>
+<li><code>toLocalString()</code>：调用每个数组元素的toLocalString方法，将结果用逗号拼接并返回</li>
+<li><code>join(seperate)</code>：调用每个数组元素的toString方法，将结果用<strong>指定分隔符</strong>拼接并返回<ul>
+<li>如果数组中有元素是undefined，用上述方法转化会以空字符串表示（也就意味着分隔符是不会被忽略的）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-8-栈与队列方法"><a href="#2-8-栈与队列方法" class="headerlink" title="2.8 栈与队列方法"></a>2.8 栈与队列方法</h3><ul>
+<li><code>push(item)</code>：将item元素压入数组末尾，数组长度加1，返回数组长度</li>
+<li><code>pop()</code>：删除数组最后一个元素，数组长度减1，返回删除的元素</li>
+<li><code>shift()</code>：删除数组第一个元素，数组长度减1，返回删除的元素</li>
+<li><code>unshift(item)</code>：将item元素压入数组首部，数组长度加1，返回数组长度</li>
+</ul>
+<p>方法组合</p>
+<ul>
+<li><code>push(item)</code> + <code>pop()</code> 使得数组可以当作栈来使用，满足先进后出</li>
+<li><code>push(item)</code> +  <code>shift()</code> 使得数组可以当作队列使用，满足先进先出</li>
+<li><code>unshift(item)</code> + <code>pop()</code> ：反向队列</li>
+</ul>
+<h3 id="2-9-排序方法"><a href="#2-9-排序方法" class="headerlink" title="2.9 排序方法"></a>2.9 排序方法</h3><ul>
+<li><p><code>reverse()</code>：直接将数组反向排序</p>
+</li>
+<li><p><code>sort(compare)</code>：</p>
+<ul>
+<li><p>如果没有传入参数，则进行升序排列：现在每一项上调用String()函数进行转型，再进行比较，排列</p>
+</li>
+<li><p>可选参数：比较函数</p>
+<ul>
+<li><p>比较函数接受两个参数</p>
+<ul>
+<li>如果第一个参数应该在第二个参数前面，则返回负值</li>
+<li>如果第一个参数应该在第二个参数后面，则返回正值</li>
+<li>如果相等，则返回0</li>
+</ul>
+</li>
+<li><p>升序排列的比较函数示例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">nums.<span class="title function_">sort</span>(<span class="function">(<span class="params">v1,v2</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 第一个参数应该在第二个参数前面，返回负值；这边第一个参数在第二个参数前面的情况是，第一个参数小于第二个参数，实现升序；</span></span><br><span class="line">    <span class="comment">// 如果要实现降序，只需要改成 v1 &gt; v2;使得第一个参数在第二个参数前面的情况变成第一个参数比第二个参数来得大</span></span><br><span class="line">    <span class="keyword">if</span>(v1&lt;v2) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (v1 &gt; v2) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 可以简化成 return v1 -v2</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>二者是对原数组进行修改，并返回原数组的引用</p>
+</li>
+</ul>
+<h3 id="2-10-操作方法"><a href="#2-10-操作方法" class="headerlink" title="2.10 操作方法"></a>2.10 操作方法</h3><ul>
+<li><code>concat(newEle1,newEle2,...)</code>：<ul>
+<li>在现有数组的基础上创建一个新数组，即复制一份数组并且能够在这份数组后面加些东西</li>
+</ul>
+</li>
+<li><code>slice(beginIndex,endIndex)</code><ul>
+<li>创建一个包含原数组中一个或多个元素的新数组</li>
+</ul>
+</li>
+<li><code>splice()</code><ul>
+<li>对原数组进行删除元素，插入元素，替换元素等操作</li>
+<li>删除：<code>splice(deleteIndex,deleteNum)</code></li>
+<li>插入&#x2F;替换：<code>splice(InsertIndex,deleteNum,newEle1,newEle2,...)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-11-搜索和位置方法"><a href="#2-11-搜索和位置方法" class="headerlink" title="2.11 搜索和位置方法"></a>2.11 搜索和位置方法</h3><ul>
+<li><p><code>indexOf(item)</code></p>
+<ul>
+<li>从头开始找，返回指定元素的在数组中的索引</li>
+</ul>
+</li>
+<li><p><code>lastIndexOf(item)</code></p>
+<ul>
+<li>从末尾开始找，返回指定元素的在数组中的索引</li>
+</ul>
+</li>
+<li><p><code>include(item)</code></p>
+<ul>
+<li>判断数组中是否包含指定元素，返回布尔值</li>
+</ul>
+<blockquote>
+<p>注意判断相等的时候是严格相等，即  <code>=== </code></p>
+</blockquote>
+</li>
+<li><p><code>find((element,index,array)=&gt;&#123;条件&#125;)</code></p>
+<ul>
+<li>找到满足断言函数的<strong>第一个</strong>数组元素</li>
+</ul>
+</li>
+<li><p><code>findIndex((element,index,array)=&gt;&#123;条件&#125;)</code></p>
+<ul>
+<li>找到满足断言函数的<strong>第一个</strong>数组元素的索引</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-12-迭代与递归"><a href="#2-12-迭代与递归" class="headerlink" title="2.12 迭代与递归"></a>2.12 迭代与递归</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 迭代方法，前三个元素分别代表：当前元素、当前元素的索引、当前元素所在数组</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums.<span class="title function_">every</span>(<span class="function">(<span class="params">el,index,array</span>)=&gt;</span> el&gt;<span class="number">2</span>)) <span class="comment">// false</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums.<span class="title function_">some</span>(<span class="function">(<span class="params">el</span>)=&gt;</span> el&gt;<span class="number">2</span>))  <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums.<span class="title function_">filter</span>(<span class="function">(<span class="params">el</span>)=&gt;</span>el&gt;<span class="number">2</span>)) <span class="comment">// [10, 5, 3]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums.<span class="title function_">map</span>(<span class="function">(<span class="params">item,index,array</span>)=&gt;</span>&#123;<span class="keyword">return</span> item+index+array.<span class="property">length</span>&#125;)) <span class="comment">// map返回一个新数组，其中每一项都会运作一遍这个函数</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item,index,array</span>)=&gt;</span>&#123; item--; &#125;)) <span class="comment">// forEach修改原数组，实现等同于for循环，并且【没有返回值】</span></span><br><span class="line"><span class="comment">// 归并方法</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums)</span><br><span class="line"><span class="comment">// prev：上一次归并函数的返回值；cur：当前的数组值，默认从第二个数组元素开始</span></span><br><span class="line"><span class="comment">// index：当前元素的索引；array：当前元素s</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nums.<span class="title function_">reduce</span>(<span class="function">(<span class="params">prev,cur,index,array</span>)=&gt;</span>&#123;<span class="keyword">return</span> cur+prev&#125;))</span><br></pre></td></tr></table></figure>
+
 
                 </div>
                 <footer class="kratos-entry-footer clearfix">
