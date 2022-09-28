@@ -34,12 +34,14 @@
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209202316306.png">
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209211156729.png">
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209211156075.png">
+<meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209282326952.png">
+<meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209282326428.png">
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209202208893.png">
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209202232381.png">
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209202242257.png">
 <meta property="og:image" content="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209202243215.png">
 <meta property="article:published_time" content="2022-09-22T08:48:32.000Z">
-<meta property="article:modified_time" content="2022-09-22T08:51:38.520Z">
+<meta property="article:modified_time" content="2022-09-28T15:28:33.292Z">
 <meta property="article:author" content="Sapphire">
 <meta property="article:tag" content="React">
 <meta name="twitter:card" content="summary">
@@ -193,7 +195,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~12.41K
+                        ~13.18K
                     
                     字
                 </li>
@@ -204,7 +206,7 @@
             
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1663836698520"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1664378913292"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
             
@@ -532,12 +534,49 @@
 <li>每一次重新渲染都要重新执行effect的原因在于：实现componentDidUpdate，因为重新渲染会导致一些组件内部属性发生改变，而effect中可能会定义有组件内容或者获取组件属性的方法，如果没有重新执行的话，</li>
 </ul>
 </li>
-<li>Effect Hook的作用<ul>
-<li>可以使用多个Effect实现关注点分离：在class中，由于生命周期的不同，我们往往需要把相同逻辑的代码拆分到不同的生命周秋中，而不同逻辑的代码聚合到单一生命周期中，这使得代码可读性差以及违反了单一职责原则；而使用Effect Hook后，我们可以将相同逻辑的代码聚合到单一的Effect中，实现关注点分离</li>
+</ul>
+<p>Effect Hook的作用</p>
+<ul>
+<li>可以使用多个Effect实现<strong>关注点分离</strong>：在class中，由于生命周期的不同，我们往往需要把相同逻辑的代码拆分到不同的生命周秋中，而不同逻辑的代码聚合到单一生命周期中，这使得代码可读性差以及违反了单一职责原则；而使用Effect Hook后，我们可以将相同逻辑的代码聚合到单一的Effect中，实现关注点分离</li>
+</ul>
+<p>为什么每次更新都需要运行Effect</p>
+<ul>
+<li>总结：实现生命周期中的<code>componentDidUpdate()</code>部分</li>
+<li>解释：如果不是在每次更新时都运行Effect的话，若Effect中的函数在页面状态更新时也应该触发，则会出现bug：<ul>
+<li>比如显示好友在线的功能，除了我们上线时候的一次性获取好友在线的状态，当我们在线时，每当好友上线触发状态变化，我们都应当能够得知（这也就要求Effect需要在每一次页面状态改变时重新运行），而不是得重新登录一次才能够获得好友状态变化</li>
 </ul>
 </li>
 </ul>
-<h1 id="extra：问题记录"><a href="#extra：问题记录" class="headerlink" title="extra：问题记录"></a>extra：问题记录</h1><h2 id="1-forEach映射问题"><a href="#1-forEach映射问题" class="headerlink" title="1. forEach映射问题"></a>1. forEach映射问题</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> products = <span class="variable language_">this</span>.<span class="property">props</span>.<span class="property">products</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;products is&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(products)</span><br><span class="line"><span class="keyword">const</span> empty = []</span><br><span class="line">products.<span class="title function_">forEach</span>(<span class="function">(<span class="params">product</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (product) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;curProduct is &quot;</span>)</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(product)</span><br><span class="line">        <span class="keyword">if</span> (product.<span class="property">category</span> !== curCategory) &#123;</span><br><span class="line">            rows.<span class="title function_">push</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">ProductCategoryRow</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">category</span>=<span class="string">&#123;product.category&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">key</span>=<span class="string">&#123;product.category&#125;/</span>&gt;</span></span>)</span><br><span class="line">        &#125;</span><br><span class="line">        rows.<span class="title function_">push</span>(</span><br><span class="line">            <span class="language-xml"><span class="tag">&lt;<span class="name">ProductRow</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">product</span>=<span class="string">&#123;product&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">key</span>=<span class="string">&#123;product.name&#125;/</span>&gt;</span></span></span><br><span class="line">        )</span><br><span class="line">        curCategory = product.<span class="property">category</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>通过跳过Effect进行性能优化</p>
+<ul>
+<li><p>Effect函数在页面每次渲染的时候都需要运行可能会导致性能降低，可以设置第二个参数：数组类型，<strong>使得仅当数组中的变量的变化触发的页面渲染才触发当前Effect</strong></p>
+</li>
+<li><p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="property">title</span> = <span class="string">`You clicked <span class="subst">$&#123;count&#125;</span> times`</span>;</span><br><span class="line">&#125;, [count]); <span class="comment">// 仅在 count 更改时更新</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特殊用法：</p>
+<ul>
+<li>如果想要一个只运行一次的effect，只需要将第二个参数设置为空数组<code>[]</code>，这意味着不会有其他变量改变触发的页面渲染会调用当前的effect函数，同时，effect的清除函数也不会被调用</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-4-Hook规则"><a href="#3-4-Hook规则" class="headerlink" title="3.4  Hook规则"></a>3.4  Hook规则</h2><ul>
+<li>rule1：<ul>
+<li><strong>只在最顶层使用Hook，不要再循环、条件、嵌套语句中调用Hook。</strong></li>
+<li>目的：保证Hook在每次渲染中都按照相同的顺序执行</li>
+<li>解决的问题：避免因为Hook顺序错误导致bug。如<img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209282326952.png" alt="image-20220928232629838"><img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209282326428.png" alt="image-20220928232636353"></li>
+</ul>
+</li>
+<li>rule2：<ul>
+<li><strong>只在React函数中调用Hook，不要在普通的JavaScript函数中调用Hook</strong><ul>
+<li>可以在React的函数组件中调用Hook</li>
+<li>可以在<strong>自定义的Hook</strong>中调用其他Hook</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-5-自定义Hook"><a href="#3-5-自定义Hook" class="headerlink" title="3.5 自定义Hook"></a>3.5 自定义Hook</h2><h1 id="extra：问题记录"><a href="#extra：问题记录" class="headerlink" title="extra：问题记录"></a>extra：问题记录</h1><h2 id="1-forEach映射问题"><a href="#1-forEach映射问题" class="headerlink" title="1. forEach映射问题"></a>1. forEach映射问题</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> products = <span class="variable language_">this</span>.<span class="property">props</span>.<span class="property">products</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;products is&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(products)</span><br><span class="line"><span class="keyword">const</span> empty = []</span><br><span class="line">products.<span class="title function_">forEach</span>(<span class="function">(<span class="params">product</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (product) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;curProduct is &quot;</span>)</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(product)</span><br><span class="line">        <span class="keyword">if</span> (product.<span class="property">category</span> !== curCategory) &#123;</span><br><span class="line">            rows.<span class="title function_">push</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">ProductCategoryRow</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">category</span>=<span class="string">&#123;product.category&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">key</span>=<span class="string">&#123;product.category&#125;/</span>&gt;</span></span>)</span><br><span class="line">        &#125;</span><br><span class="line">        rows.<span class="title function_">push</span>(</span><br><span class="line">            <span class="language-xml"><span class="tag">&lt;<span class="name">ProductRow</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">product</span>=<span class="string">&#123;product&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                <span class="attr">key</span>=<span class="string">&#123;product.name&#125;/</span>&gt;</span></span></span><br><span class="line">        )</span><br><span class="line">        curCategory = product.<span class="property">category</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202209202208893.png" alt="image-20220920220804770"></p>
 <ul>
@@ -681,7 +720,7 @@
                     <a class="tag-none-link" href="/tags/React/" rel="tag">React</a>
                 </div>
                 <div class="pull-date">
-                    <time datetime="2022-09-22T08:51:38.520Z" itemprop="dateModified">最后编辑：2022-09-22</time>
+                    <time datetime="2022-09-28T15:28:33.292Z" itemprop="dateModified">最后编辑：2022-09-28</time>
                 </div>
             </div>
         </footer>
