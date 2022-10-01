@@ -167,6 +167,147 @@
             <div class="kratos-hentry kratos-post-inner clearfix index-post">
                 
                 <header class="kratos-entry-header">
+                    <h1 class="text-center"><a class="kratos-entry-title" href="/2022/10/01/Redux%E5%AD%A6%E4%B9%A0/" itemprop="mainEntityOfPage"><span itemprop="name headline">Redux学习</span></a></h1>
+                    
+                    <ul class="kratos-post-meta text-center">
+                        <li>
+                        <time datetime="2022-10-01T13:32:00.000Z" itemprop="datePublished">
+                            <i class="fa fa-calendar"></i> 2022-10-01
+                        </time>
+                        </li>
+                        
+                        
+                            <li>
+                                <i class="fa fa-tags"></i>
+                                <a class="tag-none-link" href="/tags/Redux/" rel="tag">Redux</a>
+                            </li>
+                        
+                        
+                            <!-- 当前仅支持valine/waline自带的统计功能 -->
+                            
+                        
+                        
+                            <!-- 当前仅支持waline自带的统计功能 -->
+                            
+                        
+                    </ul>
+                </header>
+                <hr />
+                <div class="kratos-post-content" itemprop="articleBody">
+                    <h1 id="1、Redux基础概念"><a href="#1、Redux基础概念" class="headerlink" title="1、Redux基础概念"></a>1、Redux基础概念</h1><h2 id="1-1-Redux简介"><a href="#1-1-Redux简介" class="headerlink" title="1.1 Redux简介"></a>1.1 Redux简介</h2><h3 id="1-1-1-Redux是什么"><a href="#1-1-1-Redux是什么" class="headerlink" title="1.1.1 Redux是什么"></a>1.1.1 Redux是什么</h3><p>Redux 是一个使用叫做<strong>“action”的事件</strong>来<strong>管理和更新应用状态</strong>的<strong>模式和工具库</strong>。它以集中式Store的方式来对整个应用中使用的状态进行集中管理，其规则确保状态只能以可预测的方式更新。</p>
+<h3 id="1-1-2-Redux的作用"><a href="#1-1-2-Redux的作用" class="headerlink" title="1.1.2 Redux的作用"></a>1.1.2 Redux的作用</h3><p>Redux 帮你管理“全局”状态 - 应用程序中的很多组件都需要的状态。</p>
+<p><strong>Redux 提供的模式和工具使你更容易理解应用程序中的状态何时、何地、为什么、state 如何被更新，以及当这些更改发生时你的应用程序逻辑将如何表现</strong>. Redux 指导你编写可预测和可测试的代码，这有助于你确信你的应用程序将按预期工作。</p>
+<h3 id="1-1-3-Redux使用场景"><a href="#1-1-3-Redux使用场景" class="headerlink" title="1.1.3 Redux使用场景"></a>1.1.3 Redux使用场景</h3><ul>
+<li>应用中有很多state需要在不同组件中共享</li>
+<li>应用state会随着时间推移频繁更新</li>
+<li>更新state的逻辑复杂</li>
+<li>中型大型代码应用，多人协同开发</li>
+</ul>
+<h2 id="1-2-Redux术语与概念"><a href="#1-2-Redux术语与概念" class="headerlink" title="1.2 Redux术语与概念"></a>1.2 Redux术语与概念</h2><h3 id="1-2-1-State管理"><a href="#1-2-1-State管理" class="headerlink" title="1.2.1 State管理"></a>1.2.1 State管理</h3><p>计数器代码示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function Counter() &#123;</span><br><span class="line">  // State: counter 值</span><br><span class="line">  const [counter, setCounter] = useState(0)</span><br><span class="line"></span><br><span class="line">  // Action: 当事件发生后，触发状态更新的代码</span><br><span class="line">  const increment = () =&gt; &#123;</span><br><span class="line">    setCounter(prevCounter =&gt; prevCounter + 1)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // View: 视图定义</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      Value: &#123;counter&#125; &lt;button onClick=&#123;increment&#125;&gt;Increment&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>这个示例代码包括三个组成成分</p>
+<ul>
+<li>State：驱使应用的数据源</li>
+<li>View：依赖于数据渲染出的页面</li>
+<li>Action：用户在程序中触发的事件，触发state更新</li>
+</ul>
+</li>
+<li><p>单向数据流介绍</p>
+<ul>
+<li><p>用 state 来描述应用程序在特定时间点的状况</p>
+</li>
+<li><p>基于 state 来渲染出 View</p>
+</li>
+<li><p>当发生某些事情时（例如用户单击按钮），state 会根据发生的事情进行更新，生成新的 state</p>
+</li>
+<li><p>基于新的 state 重新渲染 View<img src="https://typaro-img.oss-cn-nanjing.aliyuncs.com/typaroImg/202210012147217.png" alt="image-20221001214746098"></p>
+<blockquote>
+<p>上述代码就是通过这个单向数据流实现的</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>问题：当有多个组件需要共享和使用相同state，需要进行状态提升，会使得代码的状态过于复杂，这里一块那里一块，不便于管理</p>
+</li>
+<li><p>解决办法：从组件中提取共享的state，放入<strong>组件树之外的一个集中位置</strong>，使得组件树本身成为一个大的“view”，任何组件都可以触发action改变共享的state，这就是redux的思想：<strong>应用中使用集中式的全局状态来管理，并明确更新状态的模式，以便让代码具有可预测性</strong></p>
+</li>
+</ul>
+<h3 id="1-2-2-Immutable-不可变性"><a href="#1-2-2-Immutable-不可变性" class="headerlink" title="1.2.2 Immutable 不可变性"></a>1.2.2 Immutable 不可变性</h3><p>redux中的状态都是不可变的，这意味着我们要修改state，需要先复制一份再在复制体上进行修改</p>
+<h3 id="1-2-3-Action"><a href="#1-2-3-Action" class="headerlink" title="1.2.3 Action"></a>1.2.3 Action</h3><p><strong>可以理解为对一次事件的描述</strong>，是一个对象包括两个属性，定义方式如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addTodoAction = &#123;</span><br><span class="line">  <span class="comment">// 给action一个描述性的名字，格式: 事件分类/事件名称</span></span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;todos/todoAdded&#x27;</span>, </span><br><span class="line">  <span class="comment">// 发生事件的附加信息，备注</span></span><br><span class="line">  <span class="attr">payload</span>: <span class="string">&#x27;Buy milk&#x27;</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以定义一个<strong>action creator</strong>函数，来创建并返回一个action对象，不必每次手动写action</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const addTodo = text =&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    type: &#x27;todos/todoAdded&#x27;,</span><br><span class="line">    payload: text</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-4-Reducer"><a href="#1-2-4-Reducer" class="headerlink" title="1.2.4 Reducer"></a>1.2.4 Reducer</h3><p><strong>reducer</strong> 是一个函数，接收当前的 <code>state</code> 和一个 <code>action</code> 对象，必要时决定如何更新状态，并返回新状态。函数签名是：<code>(state, action) =&gt; newState</code>。 <strong>你可以将 reducer 视为一个事件监听器，它根据接收到的 action（事件）类型处理事件。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> initialState = &#123; <span class="attr">value</span>: <span class="number">0</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">counterReducer</span>(<span class="params">state = initialState, action</span>) &#123;</span><br><span class="line">  <span class="comment">// 检查 reducer 是否关心这个 action</span></span><br><span class="line">  <span class="keyword">if</span> (action.<span class="property">type</span> === <span class="string">&#x27;counter/increment&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// 如果是，复制 `state`</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      ...state,</span><br><span class="line">      <span class="comment">// 使用新值更新 state 副本</span></span><br><span class="line">      <span class="attr">value</span>: state.<span class="property">value</span> + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 返回原来的 state 不变</span></span><br><span class="line">  <span class="keyword">return</span> state</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>一些规则<ul>
+<li>不能够修改传入的state，必须要复制一份，再进行修改，最后返回</li>
+</ul>
+</li>
+<li>逻辑步骤<ul>
+<li>检查 reducer 是否关心这个 action<ul>
+<li>如果是，则复制 state，使用新值更新 state 副本，然后返回新 state</li>
+</ul>
+</li>
+<li>否则，返回原来的 state 不变</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-5-Store"><a href="#1-2-5-Store" class="headerlink" title="1.2.5 Store"></a>1.2.5 Store</h3><ul>
+<li><p>集中存储当前应用state的地方</p>
+</li>
+<li><p>创建方式，传入一个reducer参数。实例存在一个名为getState的方法，返回当前状态值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import &#123; configureStore &#125; from &#x27;@reduxjs/toolkit&#x27;</span><br><span class="line"></span><br><span class="line">const store = configureStore(&#123; reducer: counterReducer &#125;)</span><br><span class="line"></span><br><span class="line">console.log(store.getState())</span><br><span class="line">// &#123;value: 0&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-2-6-Dispatch"><a href="#1-2-6-Dispatch" class="headerlink" title="1.2.6 Dispatch"></a>1.2.6 Dispatch</h3><p><strong>更新store的唯一方法</strong>，</p>
+<p>Redux store 有一个方法叫 <code>dispatch</code>。<strong>更新 state 的唯一方法是调用 <code>store.dispatch()</code> 并传入一个 action 对象</strong>。 store 将执行&#x3D;&#x3D;所有&#x3D;&#x3D; reducer 函数并计算出更新后的 state，调用 <code>getState()</code> 可以获取新 state。</p>
+<p>**dispatch 一个 action 可以形象的理解为 “触发一个事件”**。发生了一些事情，我们希望 store 知道这件事。 Reducer 就像事件监听器一样，当它们收到关注的 action 后，它就会更新 state 作为响应。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">increment</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;counter/increment&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">store.<span class="title function_">dispatch</span>(<span class="title function_">increment</span>())</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(store.<span class="title function_">getState</span>())</span><br><span class="line"><span class="comment">// &#123;value: 2&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-7-Selector"><a href="#1-2-7-Selector" class="headerlink" title="1.2.7 Selector"></a>1.2.7 Selector</h3><p><strong>Selector</strong> 函数可以从 store 状态树中提取指定的片段。随着应用变得越来越大，会遇到应用程序的不同部分需要读取相同的数据，selector 可以避免重复这样的读取逻辑</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">selectCounterValue</span> = state =&gt; state.<span class="property">value</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> currentValue = <span class="title function_">selectCounterValue</span>(store.<span class="title function_">getState</span>())</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(currentValue)</span><br><span class="line"><span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>类似于数据库中的视图</p>
+<h2 id="1-3-Redux数据流"><a href="#1-3-Redux数据流" class="headerlink" title="1.3 Redux数据流"></a>1.3 Redux数据流</h2><p><img src="https://cn.redux.js.org/assets/images/ReduxDataFlowDiagram-49fa8c3968371d9ef6f2a1486bd40a26.gif" alt="数据流更新动画"></p>
+<ul>
+<li>初始启动：<ul>
+<li>使用最顶层的 root reducer 函数创建 Redux store</li>
+<li>store 调用一次 root reducer，并将返回值保存为它的初始 <code>state</code></li>
+<li>当视图 首次渲染时，视图组件访问 Redux store 的当前 state，并使用该数据来决定要呈现的内容。同时监听 store 的更新，以便他们可以知道 state 是否已更改。</li>
+</ul>
+</li>
+<li>更新环节：<ul>
+<li>应用程序中发生了某些事情，例如用户单击按钮</li>
+<li>dispatch 一个 action 到 Redux store，例如 <code>dispatch(&#123;type: &#39;counter/increment&#39;&#125;)</code></li>
+<li>store 用之前的 <code>state</code> 和当前的 <code>action</code> 再次运行 reducer 函数，并将返回值保存为新的 <code>state</code></li>
+<li>store 通知所有订阅过的视图，通知它们 store 发生更新</li>
+<li>每个订阅过 store 数据的视图 组件都会检查它们需要的 state 部分是否被更新。</li>
+<li>发现数据被更新的每个组件都强制使用新数据重新渲染，紧接着更新网页</li>
+</ul>
+</li>
+</ul>
+
+                </div>
+                <footer class="kratos-entry-footer clearfix">
+                    <div class="post-like-donate text-center clearfix">
+                        <a class="read-more" href="/2022/10/01/Redux%E5%AD%A6%E4%B9%A0/#more" title="Redux学习">继续阅读 <i class="fa fa-chevron-circle-right"></i></a>
+                    </div>
+                </footer>
+            </div>
+        </article>
+    
+
+    
+    
+        <article itemscope itemtype="https://schema.org/Article">
+            <div class="kratos-hentry kratos-post-inner clearfix index-post">
+                
+                <header class="kratos-entry-header">
                     <h1 class="text-center"><a class="kratos-entry-title" href="/2022/09/29/CSS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="mainEntityOfPage"><span itemprop="name headline">CSS学习笔记</span></a></h1>
                     
                     <ul class="kratos-post-meta text-center">
@@ -1779,7 +1920,7 @@
                 文章
             </span>
             <span class="count">
-                5
+                6
             </span>
         </a>
         <a class="meta-item" href="/categories/">
@@ -1795,7 +1936,7 @@
                 标签
             </span>
             <span class="count">
-                2
+                3
             </span>
         </a>
     </div>
@@ -1808,7 +1949,7 @@
   <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
     <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
       <div class="tag-clouds">
-        <a href="/tags/CSS/" style="font-size: 0.6em;">CSS</a> <a href="/tags/React%E3%80%81%E5%89%8D%E7%AB%AF/" style="font-size: 0.6em;">React、前端</a>
+        <a href="/tags/CSS/" style="font-size: 0.6em;">CSS</a> <a href="/tags/React%E3%80%81%E5%89%8D%E7%AB%AF/" style="font-size: 0.6em;">React、前端</a> <a href="/tags/Redux/" style="font-size: 0.6em;">Redux</a>
       </div>
   </aside>
 
@@ -1819,6 +1960,12 @@
   <div class="tab-content">
       <ul class="list-group">
         
+        
+          
+          
+            <a class="list-group-item" href="/2022/10/01/Redux%E5%AD%A6%E4%B9%A0/"><i class="fa  fa-book"></i> Redux学习</a>
+            
+          
         
           
           
@@ -1845,11 +1992,7 @@
           
         
           
-          
-            <a class="list-group-item" href="/2022/09/22/hello-world/"><i class="fa  fa-book"></i> Hello World</a>
             
-          
-        
       </ul>
   </div>
   </aside>
